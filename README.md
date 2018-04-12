@@ -2,7 +2,7 @@
 This is a proof of concept for using wordpress comments to run a "live" chat
 
 1) Clone into plugins folder and activate
-2) Create a page or a post that contains this div: `<div id="comment-chat"></div>`
+2) Create a page or a post that allows comments and contains this div: `<div id="commentchat"></div>`
 3) Include this in your functions.php:
 ```
 function filter_rest_allow_anonymous_comments() {
