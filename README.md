@@ -11,3 +11,6 @@ function filter_rest_allow_anonymous_comments() {
 add_filter('rest_allow_anonymous_comments', 'filter_rest_allow_anonymous_comments');
 ```
 4) In WordPress discussion settings uncheck 'Comment author must fill out name and email' and 'A comment is held for moderation'
+
+
+To edit you'll need to run `npm install` and then `npm run watch` to set up a watcher.
