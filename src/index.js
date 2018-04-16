@@ -84,10 +84,6 @@ class App extends React.Component {
             });
     }
 
-    logIn(author_name) {
-        this.setState({ author_name });
-    }
-
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
@@ -107,14 +103,13 @@ class App extends React.Component {
                 :
                     (
                         <div>
-                            <Login logIn={this.logIn} />
                         </div>
                     )
                 }
             </div>
-            );
-        }
-    }
+		);
+	}
+}
 
 window.onload = function () {
 
