@@ -18,18 +18,28 @@ const MockPerson = {
 }
 
 class App extends React.Component {
-    constructor() {
-        super();
 
-        this.state = {
-            comments: [],
-            author_name: null,
-        }
+	constructor( props ) {
+		super( props );
 
-        this.postComment = this.postComment.bind(this);
-        this.refreshComments = this.refreshComments.bind(this);
-        this.logIn = this.logIn.bind(this);
-    }
+		this.state = {
+			comments: [],
+			wp_api_root: props.wpApiSettings.root,
+			wp_api_nonce: props.wpApiSettings.nonce,
+			chatroom_id: props.chatroomVars.chatroomID,
+			author: props.chatroomVars.userID,
+			author_email: props.chatroomVars.userEmail,
+			author_ip: props.chatroomVars.userIP,
+			author_name: props.chatroomVars.userDisplayName,
+			author_url: props.chatroomVars.userURL,
+			author_user_agent: props.chatroomVars.userAgent,
+			author_avatar: props.chatroomVars.userAvatar,
+		}
+
+		this.postComment = this.postComment.bind(this);
+		this.refreshComments = this.refreshComments.bind(this);
+	}
+
 
     componentDidMount() {
         this.refreshComments();
