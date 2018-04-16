@@ -1,6 +1,5 @@
 import Comment from './Components/Comment';
 import InputBar from './Components/InputBar';
-import Login from './Components/Login';
 
 const ulStyle = {
     margin: '0',
