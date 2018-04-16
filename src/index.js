@@ -79,20 +79,20 @@ class App extends React.Component {
 				}),
 			}
 		)
-            .then((res) => res.json())
-            .then((data) => console.log(data))
-            .then(this.refreshComments);
+		.then((res) => res.json())
+		.then((data) => console.log(data))
+		.then(this.refreshComments);
     }
 
-    refreshComments() {
-        console.log("Polling api");
-        fetch('/wp-json/wp/v2/comments')
-            .then((res) => res.json())
-            .then((comments) => {
-                comments.reverse();
-                this.setState({ comments });
-            });
-    }
+	refreshComments() {
+		console.log('Polling api');
+		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}`)
+			.then((res) => res.json())
+	.then((comments) => {
+			comments.reverse();
+		this.setState({ comments });
+	});
+	}
 
     render() {
         return (
