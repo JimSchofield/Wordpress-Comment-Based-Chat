@@ -115,10 +115,19 @@ class App extends React.Component {
             );
         }
     }
-    
+
 window.onload = function () {
-    const app = document.querySelector('#commentchat');
-    if (app) {
-                    ReactDOM.render(<App />, app);
-                }
-}
+
+	const app = document.querySelector('#commentchat');
+	const chatroomVars = window.chatroomVars;
+	const wpApiSettings = window.wpApiSettings;
+
+	if ( app && chatroomVars ) {
+		ReactDOM.render(
+		<App
+		wpApiSettings={ wpApiSettings }
+		chatroomVars={ chatroomVars }
+		/>, app
+	);
+	}
+};
