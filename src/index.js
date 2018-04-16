@@ -96,7 +96,6 @@ class App extends React.Component {
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
-                <h1>Comment-chat!</h1>
                 {this.state.author_name ?
                     (
                         [<ul style={ulStyle}>
