@@ -64,11 +64,21 @@ class App extends React.Component {
             ]
         })
 
-        fetch(`/wp-json/wp/v2/comments?author_name=${author_name}&email=jbob@gmail.com&content=${text}&post=15`,
-            {
-                method: 'post'
-            }
-        )
+		fetch(`${this.state.wp_api_root}wp/v2/comments`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-NONCE': this.state.wp_api_nonce,
+				},
+				credentials: 'same-origin',
+				body: JSON.stringify({
+					author: this.state.author,
+					content: text,
+					post: this.state.chatroom_id,
+				}),
+			}
+		)
             .then((res) => res.json())
             .then((data) => console.log(data))
             .then(this.refreshComments);
