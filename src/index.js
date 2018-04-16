@@ -1,6 +1,5 @@
 import Comment from './Components/Comment';
 import InputBar from './Components/InputBar';
-import Login from './Components/Login';
 
 const ulStyle = {
     margin: '0',
@@ -18,18 +17,28 @@ const MockPerson = {
 }
 
 class App extends React.Component {
-    constructor() {
-        super();
 
-        this.state = {
-            comments: [],
-            author_name: null,
-        }
+	constructor( props ) {
+		super( props );
 
-        this.postComment = this.postComment.bind(this);
-        this.refreshComments = this.refreshComments.bind(this);
-        this.logIn = this.logIn.bind(this);
-    }
+		this.state = {
+			comments: [],
+			wp_api_root: props.wpApiSettings.root,
+			wp_api_nonce: props.wpApiSettings.nonce,
+			chatroom_id: props.chatroomVars.chatroomID,
+			author: props.chatroomVars.userID,
+			author_email: props.chatroomVars.userEmail,
+			author_ip: props.chatroomVars.userIP,
+			author_name: props.chatroomVars.userDisplayName,
+			author_url: props.chatroomVars.userURL,
+			author_user_agent: props.chatroomVars.userAgent,
+			author_avatar: props.chatroomVars.userAvatar,
+		}
+
+		this.postComment = this.postComment.bind(this);
+		this.refreshComments = this.refreshComments.bind(this);
+	}
+
 
     componentDidMount() {
         this.refreshComments();
@@ -54,34 +63,39 @@ class App extends React.Component {
             ]
         })
 
-        fetch(`/wp-json/wp/v2/comments?author_name=${author_name}&email=jbob@gmail.com&content=${text}&post=15`,
-            {
-                method: 'post'
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => console.log(data))
-            .then(this.refreshComments);
+		fetch(`${this.state.wp_api_root}wp/v2/comments`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-NONCE': this.state.wp_api_nonce,
+				},
+				credentials: 'same-origin',
+				body: JSON.stringify({
+					author: this.state.author,
+					content: text,
+					post: this.state.chatroom_id,
+				}),
+			}
+		)
+		.then((res) => res.json())
+		.then((data) => console.log(data))
+		.then(this.refreshComments);
     }
 
-    refreshComments() {
-        console.log("Polling api");
-        fetch('/wp-json/wp/v2/comments')
-            .then((res) => res.json())
-            .then((comments) => {
-                comments.reverse();
-                this.setState({ comments });
-            });
-    }
-
-    logIn(author_name) {
-        this.setState({ author_name });
-    }
+	refreshComments() {
+		console.log('Polling api');
+		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}`)
+			.then((res) => res.json())
+	.then((comments) => {
+			comments.reverse();
+		this.setState({ comments });
+	});
+	}
 
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
-                <h1>Comment-chat!</h1>
                 {this.state.author_name ?
                     (
                         [<ul style={ulStyle}>
@@ -97,18 +111,26 @@ class App extends React.Component {
                 :
                     (
                         <div>
-                            <Login logIn={this.logIn} />
                         </div>
                     )
                 }
             </div>
-            );
-        }
-    }
-    
-window.onload = function () {
-    const app = document.querySelector('#commentchat');
-    if (app) {
-                    ReactDOM.render(<App />, app);
-                }
+		);
+	}
 }
+
+window.onload = function () {
+
+	const app = document.querySelector('#commentchat');
+	const chatroomVars = window.chatroomVars;
+	const wpApiSettings = window.wpApiSettings;
+
+	if ( app && chatroomVars ) {
+		ReactDOM.render(
+		<App
+		wpApiSettings={ wpApiSettings }
+		chatroomVars={ chatroomVars }
+		/>, app
+	);
+	}
+};
