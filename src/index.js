@@ -8,14 +8,6 @@ const ulStyle = {
     color: '#222',
 }
 
-const MockPerson = {
-    author_email: 'test@gmail.com',
-    author_name: 'Mock User',
-    author_url: null,
-    content: 'Mock comment',
-    post: 15
-}
-
 class App extends React.Component {
 
 	constructor( props ) {
@@ -58,7 +50,8 @@ class App extends React.Component {
                     author_name: author_name,
                     content: {
                         rendered: text
-                    }
+					},
+					date: Date.now(),
                 }
             ]
         })
@@ -87,33 +80,28 @@ class App extends React.Component {
 		console.log('Polling api');
 		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}`)
 			.then((res) => res.json())
-	.then((comments) => {
-			comments.reverse();
-		this.setState({ comments });
-	});
+			.then((comments) => {
+					comments.reverse();
+					console.log(comments);
+					this.setState({ comments });
+				});
 	}
 
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
-                {this.state.author_name ?
-                    (
-                        [<ul style={ulStyle}>
-                            {this.state.comments.length &&
-                                this.state.comments.map((el) => {
-                                    return (
-                                        <Comment comment={el} />
-                                    )
-                                })}
-                        </ul>,
-                        <InputBar post={this.postComment} />]
-                    )
-                :
-                    (
-                        <div>
-                        </div>
-                    )
-                }
+				<ul style={ulStyle}>
+					{this.state.comments.length ?
+						this.state.comments.map((el) => {
+							return (
+								<Comment comment={el} />
+							)
+						})
+						:
+						<strong>No messages yet!</strong>
+					}
+				</ul>
+				<InputBar post={this.postComment} />
             </div>
 		);
 	}

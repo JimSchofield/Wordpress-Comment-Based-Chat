@@ -13,6 +13,7 @@ export default function Comment(props) {
     
     const {
         author_name,
+        date,
         content: {
             rendered
         },
@@ -29,6 +30,7 @@ export default function Comment(props) {
     return(
         <li style={liStyle}>
             <strong style={nameStyle}>{author_name}:</strong>
+            <span>{date}</span>
             <span>{cleanRendered(rendered)}</span>
         </li>
     );
