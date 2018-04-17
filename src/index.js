@@ -82,11 +82,9 @@ class App extends React.Component {
 
 	refreshComments() {
 		console.log('Polling api');
-		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}&per_page=100`)
+		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}&per_page=100&order=asc`)
 			.then((res) => res.json())
 			.then((comments) => {
-					comments.reverse();
-
 					this.setState({ comments }, () => {
 						//scroll div to bottom on succesful update
 						console.log(this.chatContainer);
