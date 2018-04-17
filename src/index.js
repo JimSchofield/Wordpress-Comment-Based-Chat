@@ -96,24 +96,15 @@ class App extends React.Component {
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
-                {this.state.author_name ?
-                    (
-                        [<ul style={ulStyle}>
-                            {this.state.comments.length &&
-                                this.state.comments.map((el) => {
-                                    return (
-                                        <Comment comment={el} />
-                                    )
-                                })}
-                        </ul>,
-                        <InputBar post={this.postComment} />]
-                    )
-                :
-                    (
-                        <div>
-                        </div>
-                    )
-                }
+				<ul style={ulStyle}>
+					{this.state.comments.length &&
+						this.state.comments.map((el) => {
+							return (
+								<Comment comment={el} />
+							)
+						})}
+				</ul>,
+				<InputBar post={this.postComment} />
             </div>
 		);
 	}
