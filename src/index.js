@@ -2,7 +2,8 @@ import Comment from './Components/Comment';
 import InputBar from './Components/InputBar';
 
 const ulStyle = {
-    margin: '0',
+	margin: '0',
+	maxHeight: '430px',
     padding: '1em',
     background: '#f3f3f3',
     color: '#222',
@@ -91,16 +92,13 @@ class App extends React.Component {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
 				<ul style={ulStyle}>
-					{this.state.comments.length ?
+					{this.state.comments.length &&
 						this.state.comments.map((el) => {
 							return (
 								<Comment comment={el} />
 							)
-						})
-						:
-						<strong>No messages yet!</strong>
-					}
-				</ul>
+						})}
+				</ul>,
 				<InputBar post={this.postComment} />
             </div>
 		);
