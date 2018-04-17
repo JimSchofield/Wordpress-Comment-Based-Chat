@@ -3,10 +3,11 @@ import InputBar from './Components/InputBar';
 
 const ulStyle = {
 	margin: '0',
-	maxHeight: '430px',
+	maxHeight: '532px',
     padding: '1em',
     background: '#f3f3f3',
-    color: '#222',
+	color: '#222',
+	overflow: 'auto',
 }
 
 class App extends React.Component {
@@ -30,6 +31,8 @@ class App extends React.Component {
 
 		this.postComment = this.postComment.bind(this);
 		this.refreshComments = this.refreshComments.bind(this);
+
+		this.chatContainer = React.createRef();
 	}
 
 
@@ -79,26 +82,30 @@ class App extends React.Component {
 
 	refreshComments() {
 		console.log('Polling api');
-		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}`)
+		fetch(`${this.state.wp_api_root}wp/v2/comments?post=${this.state.chatroom_id}&per_page=100`)
 			.then((res) => res.json())
 			.then((comments) => {
 					comments.reverse();
-					console.log(comments);
-					this.setState({ comments });
+
+					this.setState({ comments }, () => {
+						//scroll div to bottom on succesful update
+						console.log(this.chatContainer);
+						this.chatContainer.current.scrollTop = this.chatContainer.current.scrollHeight;
+					});
 				});
 	}
 
     render() {
         return (
             <div className="commentChat" style={{ margin: '0 1em' }}>
-				<ul style={ulStyle}>
+				<ul style={ulStyle} ref={this.chatContainer}>
 					{this.state.comments.length &&
 						this.state.comments.map((el) => {
 							return (
 								<Comment comment={el} />
 							)
 						})}
-				</ul>,
+				</ul>
 				<InputBar post={this.postComment} />
             </div>
 		);
